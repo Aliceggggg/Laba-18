@@ -1,0 +1,98 @@
+#include <iostream>
+#include <vector>
+#include <fstream>
+#include <cstdlib>
+#include <ctime>
+#include <Windows.h>
+
+using namespace std;
+
+// Функция для ввода с клавиатуры
+void inputFromTerminal(vector<int>& vec, int size) 
+{
+    cout << "Введите " << size << " элементов:\n";
+    for (int i = 0; i < size; ++i) 
+    {
+        int value;
+        cin >> value;
+        vec.push_back(value);
+    }
+}
+
+void inputFromFile(vector<int>& vec) 
+{
+    ifstream file("a1.txt");
+    int value;
+    while (file >> value) 
+    {
+        vec.push_back(value);
+    }
+    file.close();
+}
+
+
+// Функция для генерации чисел
+void inputRandom(vector<int>& vec, int size) 
+{
+    srand(time(0));
+    for (int i = 0; i < size; ++i) 
+    {
+        vec.push_back(rand() % 5-3);
+    }
+}
+
+int main() 
+{
+    SetConsoleOutputCP(CP_UTF8);
+    setlocale(LC_ALL, "Russian");
+    vector<int> vec;
+    int choice, size;
+
+    cout << "Выберите способ ввода вектора:\n";
+    cout << "1. Ввод с клавиатуры\n";
+    cout << "2. Чтение из файла\n";
+    cout << "3. Генерация случайных чисел\n";
+    cout << "Ваш выбор: ";
+    cin >> choice;
+
+    switch (choice) 
+    {
+    case 1:
+        cout << "Введите размер вектора: ";
+        cin >> size;
+        inputFromTerminal(vec, size);
+        break;
+    case 2:
+        inputFromFile(vec);
+        break;
+    case 3:
+        cout << "Введите размер вектора: ";
+        cin >> size;
+        inputRandom(vec, size);
+        break;
+    default:
+        cout << "Введите размер вектора: ";
+        cin >> size;
+        inputRandom(vec, size);
+        break;
+    }
+
+    // Вывод 
+    cout << "Ваш вектор: ";
+    for (int i = 0;i < vec.size(); i++ ) 
+    {
+        cout << vec[i] << " ";
+    }
+    cout << endl;
+    
+    auto newEnd = remove(vec.begin(), vec.end(), 0);
+    vec.erase(newEnd, vec.end());
+
+    cout << "Вектор после удаления нулей: ";
+    for (int i = 0;i < vec.size(); i++)
+    {
+        cout << vec[i] << " ";
+    }
+    cout << endl;
+
+}
